@@ -117,3 +117,30 @@ def test_mock_decorator():
     assert func.__doc__ == "docstring"
     assert Foo.meth.__doc__ == "docstring"
     assert Bar.__doc__ == "docstring"
+
+
+def test_typevar_in_make_subclass():
+    """Test that _make_subclass works with TypeVar objects."""
+    from typing import TypeVar
+    from sphinx.ext.autodoc.mock import _make_subclass
+    
+    T = TypeVar('T')
+    
+    # This should not raise a TypeError
+    result = _make_subclass(T, 'test_module')
+    
+    # Verify the result has correct attributes
+    assert result.__display_name__ == 'test_module.T'
+    assert result.__module__ == 'test_module'
+    assert result.__name__ == 'T'
+    
+    # Test with regular string too to ensure no regression
+    result2 = _make_subclass('RegularClass', 'test_module')
+    assert result2.__display_name__ == 'test_module.RegularClass'
+    assert result2.__module__ == 'test_module'
+    assert result2.__name__ == 'RegularClass'
+    
+    # Test with other types (edge case testing)
+    result3 = _make_subclass(123, 'test_module')
+    assert result3.__display_name__ == 'test_module.123'
+    assert result3.__name__ == '123'
