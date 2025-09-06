@@ -139,3 +139,8 @@ def test_typevar_in_make_subclass():
     assert result2.__display_name__ == 'test_module.RegularClass'
     assert result2.__module__ == 'test_module'
     assert result2.__name__ == 'RegularClass'
+    
+    # Test with other types (edge case testing)
+    result3 = _make_subclass(123, 'test_module')
+    assert result3.__display_name__ == 'test_module.123'
+    assert result3.__name__ == '123'

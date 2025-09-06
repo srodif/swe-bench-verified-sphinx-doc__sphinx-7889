@@ -68,7 +68,7 @@ class _MockObject:
         return self.__display_name__
 
 
-def _make_subclass(name: str, module: str, superclass: Any = _MockObject,
+def _make_subclass(name: Any, module: str, superclass: Any = _MockObject,
                    attributes: Any = None) -> Any:
     name_str = getattr(name, '__name__', str(name))
     attrs = {'__module__': module, '__display_name__': module + '.' + name_str}
